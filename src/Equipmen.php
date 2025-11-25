@@ -2,6 +2,8 @@
 
 class Equipment
 {
+    use ReservableTrait;
+
     private string $id;
     private string $name;
     private string $type;
