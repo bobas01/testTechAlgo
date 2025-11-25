@@ -45,4 +45,42 @@ class Technician
     {
         return $this->endTime;
     }
+
+    public function getStartTimeInMinutes(): int
+    {
+        return $this->timeToMinutes($this->startTime);
+    }
+
+    public function getEndTimeInMinutes(): int
+    {
+        return $this->timeToMinutes($this->endTime);
+    }
+
+    public function isCompatibleWith(string $sampleType): bool
+    {
+        return $this->speciality === 'GENERAL' || $this->speciality === $sampleType;
+    }
+
+    public function isAvailable(int $startMinutes, int $durationMinutes): bool
+    {
+        $endMinutes = $startMinutes + $durationMinutes;
+
+        if (
+            $startMinutes < $this->getStartTimeInMinutes() ||
+            $endMinutes > $this->getEndTimeInMinutes()
+        ) {
+            return false;
+        }
+
+        foreach ($this->getReservations() as $reservation) {
+            $resStart = $this->timeToMinutes($reservation['start']);
+            $resEnd = $this->timeToMinutes($reservation['end']);
+
+            if (!($endMinutes <= $resStart || $startMinutes >= $resEnd)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

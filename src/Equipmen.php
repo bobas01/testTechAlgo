@@ -21,7 +21,6 @@ class Equipment
         $this->available = $available;
     }
 
-    // Getters
     public function getId(): string
     {
         return $this->id;
@@ -39,9 +38,33 @@ class Equipment
         return $this->available;
     }
 
-    // Setter
     public function setAvailable(bool $available): void
     {
         $this->available = $available;
+    }
+
+    public function isCompatibleWith(string $sampleType): bool
+    {
+        return $this->type === $sampleType;
+    }
+
+    public function isAvailableAt(int $startMinutes, int $durationMinutes): bool
+    {
+        if (!$this->available) {
+            return false;
+        }
+
+        $endMinutes = $startMinutes + $durationMinutes;
+
+        foreach ($this->getReservations() as $reservation) {
+            $resStart = $this->timeToMinutes($reservation['start']);
+            $resEnd = $this->timeToMinutes($reservation['end']);
+
+            if (!($endMinutes <= $resStart || $startMinutes >= $resEnd)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

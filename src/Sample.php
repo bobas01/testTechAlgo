@@ -50,4 +50,10 @@ class Sample
     {
         return $this->patientId;
     }
+
+    public function getArrivalTimeInMinutes(): int
+    {
+        [$hours, $minutes] = explode(':', $this->arrivalTime);
+        return (int)$hours * 60 + (int)$minutes;
+    }
 }
