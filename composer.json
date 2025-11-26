@@ -15,7 +15,10 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Test\\": "test/"
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     }
 }
